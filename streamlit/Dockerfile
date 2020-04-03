@@ -61,3 +61,12 @@ RUN cd /app/streamlit/lib && pipenv --three
 RUN cd /app/streamlit && pipenv run make all-devel
 
 RUN cd /app/streamlit/frontend && yarn upgrade
+
+RUN pipenv run pip3 install matplotlib
+RUN pipenv run pip3 install sklearn
+
+COPY lung.png /app/streamlit/lung.png
+COPY seg.png /app/streamlit/seg.png
+COPY main.py /app/streamlit/main.py
+
+EXPOSE 3000
