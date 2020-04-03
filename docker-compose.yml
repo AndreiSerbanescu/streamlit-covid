@@ -1,0 +1,19 @@
+version: '3'
+services:
+  lungmask:
+    build: lungmask
+    container_name: lungmask
+    hostname: lungmask
+    ports:
+      - "5001:5001"
+    command: tail -F anything #python3 /app/start.py #tail -F anything
+
+
+  streamlit:
+    build: streamlit
+    container_name: streamlit
+    hostname: streamlit
+    ports:
+      - "5002:5002"
+    command: tail -F anything
+
