@@ -2,18 +2,15 @@ version: '3'
 services:
   lungmask:
     build: lungmask
-    container_name: lungmask
-    hostname: lungmask
+    container_name: lungmask_for_streamlit
+    hostname: lungmask_for_streamlit
+    command: tail -F anything
+
+  streamlit:
+    build: streamlit-container
+    container_name: streamlit
+    hostname: streamlit
     ports:
-      - "8501:8501"
+      - "8502:8501"
     command: streamlit run main.py
-
-
-#  streamlit:
-#    build: streamlit
-#    container_name: streamlit
-#    hostname: streamlit
-#    ports:
-#      - "3000:3000"
-#    command: tail -F anything
 
