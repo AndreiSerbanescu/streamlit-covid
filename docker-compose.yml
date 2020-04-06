@@ -10,6 +10,8 @@ services:
     build: streamlit-container
     container_name: streamlit
     hostname: streamlit
+    environment:
+      - ENVIRONMENT=docker
     ports:
       - "8502:8501"
     command: streamlit run main.py
