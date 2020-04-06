@@ -1,0 +1,6 @@
+[submodule "lungmask"]
+	path = lungmask
+	url = https://github.com/AndreiSerbanescu/lungmask.git
+[submodule "streamlit-container"]
+	path = streamlit-container
+	url = https://github.com/AndreiSerbanescu/streamlit-container.git
