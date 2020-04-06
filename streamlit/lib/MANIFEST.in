@@ -1,3 +1,0 @@
-include README.md
-include streamlit/config/config.yaml
-recursive-include streamlit/static *
