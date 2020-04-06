@@ -4,15 +4,32 @@ services:
     build: lungmask
     container_name: lungmask_for_streamlit
     hostname: lungmask_for_streamlit
-    command: tail -F anything
+    environment:
+      - LUNGMASK_HOSTNAME=lungmask_for_streamlit
+      - LUNGMASK_PORT=8000
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONBUFFERED=1
+    command: python3 start.py
+    volumes:
+      - app-volume:/app/data_share
+
 
   streamlit:
     build: streamlit-container
     container_name: streamlit
     hostname: streamlit
     environment:
-      - ENVIRONMENT=docker
+      - LUNGMASK_HOSTNAME=lungmask_for_streamlit
+      - LUNGMASK_PORT=8000
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
     ports:
       - "8502:8501"
     command: streamlit run main.py
+    volumes:
+      - app-volume:/app/data_share
+
+
+volumes:
+  app-volume:
 
