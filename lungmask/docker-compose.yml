@@ -1,9 +1,0 @@
-version: '3'
-services:
-  lungmask:
-    build: ./
-    container_name: lungmask
-    hostname: lungmask
-    ports:
-      - "5001:5001"
-    command: python3 /app/start.py #tail -F anything
