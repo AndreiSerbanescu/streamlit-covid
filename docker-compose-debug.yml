@@ -1,0 +1,39 @@
+version: '3'
+services:
+  lungmask:
+    build: lungmask
+    container_name: lungmask_for_streamlit
+    hostname: lungmask_for_streamlit
+    environment:
+      - LUNGMASK_HOSTNAME=lungmask_for_streamlit
+      - LUNGMASK_PORT=8000
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONBUFFERED=1
+    command: tail -F anything #python3 start.py
+    volumes:
+      - app-volume:/app/data_share
+      - ./source:/app/source
+      - ./lungmask:/src/
+
+
+  streamlit:
+    build: streamlit-container
+    container_name: streamlit
+    hostname: streamlit
+    environment:
+      - LUNGMASK_HOSTNAME=lungmask_for_streamlit
+      - LUNGMASK_PORT=8000
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
+    ports:
+      - "8502:8501"
+    command: tail -F anything #streamlit run main.py
+    volumes:
+      - app-volume:/app/data_share
+      - ./source:/app/source
+      - ./streamlit-container:/src/
+
+
+volumes:
+  app-volume:
+
