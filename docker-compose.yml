@@ -9,6 +9,7 @@ services:
       - LUNGMASK_PORT=8000
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONBUFFERED=1
+      - ENVIRONMENT=dockercompose
     command: python3 start.py
     volumes:
       - app-volume:/app/data_share
@@ -23,6 +24,7 @@ services:
       - LUNGMASK_PORT=8000
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
+      - ENVIRONMENT=dockercompose
     ports:
       - "8502:8501"
     command: streamlit run main.py
