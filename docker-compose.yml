@@ -21,7 +21,7 @@ services:
     shm_size: '2gb'
     container_name: ct_muscle_seg
     hostname: ct_muscle_seg
-    command: tail -F anything
+    command: python3 /app/listen.py
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
@@ -32,7 +32,7 @@ services:
     build: lungmask-1
     container_name: lungmask_converter
     hostname: lungmask_converter
-    command: tail -F anything
+    command: python3 /app/listen.py
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
