@@ -4,3 +4,6 @@
 [submodule "streamlit-container"]
 	path = streamlit-container
 	url = https://github.com/AndreiSerbanescu/streamlit-container.git
+[submodule "CTMuscleSegmentation"]
+	path = CTMuscleSegmentation
+	url = https://github.com/AndreiSerbanescu/CTMuscleSegmentation.git

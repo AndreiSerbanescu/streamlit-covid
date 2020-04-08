@@ -1,4 +1,4 @@
-version: '3'
+version: '3.5'
 services:
   lungmask:
     build: lungmask
@@ -13,6 +13,15 @@ services:
     command: python3 start.py
     volumes:
       - app-volume:/app/data_share
+
+  ct_muscle_seg:
+    build:
+      context: CTMuscleSegmentation
+      shm_size: '2gb'
+    shm_size: '2gb'
+    container_name: ct_muscle_seg
+    hostname: ct_muscle_seg
+    command: tail -F anything
 
 
   streamlit:
