@@ -30,7 +30,7 @@ services:
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./CTMuscleSegmentation/src:/src
+      - ./CTMuscleSegmentation:/src
 
   lungmask_converter:
     build: lungmask-1
@@ -43,7 +43,7 @@ services:
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./CTMuscleSegmentation/src:/src
+      - ./lungmask-1:/src
 
   streamlit:
     build: streamlit-container
@@ -52,6 +52,10 @@ services:
     environment:
       - LUNGMASK_HOSTNAME=lungmask_for_streamlit
       - LUNGMASK_PORT=8000
+      - CT_MUSCLE_SEG_HOSTNAME=ct_muscle_seg
+      - CT_MUSCLE_SEG_PORT=8000
+      - LUNGMASK_CONVERTER_HOSTNAME=lungmask_converter
+      - LUNGMASK_CONVERTER_PORT=8000
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
     ports:

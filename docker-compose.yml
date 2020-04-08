@@ -46,6 +46,10 @@ services:
     environment:
       - LUNGMASK_HOSTNAME=lungmask_for_streamlit
       - LUNGMASK_PORT=8000
+      - CT_MUSCLE_SEG_HOSTNAME=ct_muscle_seg
+      - CT_MUSCLE_SEG_PORT=8000
+      - LUNGMASK_CONVERTER_HOSTNAME=lungmask_converter
+      - LUNGMASK_CONVERTER_PORT=8000
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=dockercompose
