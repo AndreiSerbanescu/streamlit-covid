@@ -7,3 +7,6 @@
 [submodule "CTMuscleSegmentation"]
 	path = CTMuscleSegmentation
 	url = https://github.com/AndreiSerbanescu/CTMuscleSegmentation.git
+[submodule "lungmask-1"]
+	path = lungmask-1
+	url = https://github.com/AndreiSerbanescu/lungmask-1.git

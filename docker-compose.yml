@@ -22,7 +22,22 @@ services:
     container_name: ct_muscle_seg
     hostname: ct_muscle_seg
     command: tail -F anything
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - app-volume:/app/data_share
 
+  lungmask_converter:
+    build: lungmask-1
+    container_name: lungmask_converter
+    hostname: lungmask_converter
+    command: tail -F anything
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - app-volume:/app/data_share
 
   streamlit:
     build: streamlit-container
