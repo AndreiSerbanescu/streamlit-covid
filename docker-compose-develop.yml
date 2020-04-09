@@ -32,6 +32,19 @@ services:
       - ./source:/app/source
       - ./CTMuscleSegmentation:/src
 
+  ct_visceral_fat:
+    build: CTVisceralFat
+    container_name: ct_visceral_fat
+    hostname: ct_visceral_fat
+    command: tail -F anything
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - app-volume:/app/data_share
+      - ./source:/app/source
+      - ./CTVisceralFat:/src
+
   lungmask_converter:
     build: lungmask-1
     container_name: lungmask_converter
