@@ -36,7 +36,7 @@ services:
     build: CTVisceralFat
     container_name: ct_visceral_fat
     hostname: ct_visceral_fat
-    command: tail -F anything
+    command: python3 listen.py
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
