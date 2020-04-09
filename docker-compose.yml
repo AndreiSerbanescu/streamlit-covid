@@ -32,7 +32,7 @@ services:
     build: CTVisceralFat
     container_name: ct_visceral_fat
     hostname: ct_visceral_fat
-    command: tail -F anything
+    command: python3 listen.py
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
@@ -67,7 +67,7 @@ services:
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=dockercompose
     ports:
-      - "8502:8501"
+      - "8503:8501"
     command: streamlit run main.py
     volumes:
       - app-volume:/app/data_share

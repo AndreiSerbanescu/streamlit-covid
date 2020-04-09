@@ -74,8 +74,8 @@ services:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
     ports:
-      - "8502:8501"
-    command: python3 develop.py #streamlit run main.py
+      - "8503:8501"
+    command: python3 develop.py && tail -F anything
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
