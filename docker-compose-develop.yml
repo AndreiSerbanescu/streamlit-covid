@@ -60,7 +60,7 @@ services:
       - PYTHONUNBUFFERED=1
     ports:
       - "8502:8501"
-    command: python3 develop #streamlit run main.py
+    command: python3 develop.py #streamlit run main.py
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
