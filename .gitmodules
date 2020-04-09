@@ -10,3 +10,6 @@
 [submodule "lungmask-1"]
 	path = lungmask-1
 	url = https://github.com/AndreiSerbanescu/lungmask-1.git
+[submodule "CTVisceralFat"]
+	path = CTVisceralFat
+	url = https://github.com/AndreiSerbanescu/CTVisceralFat.git
