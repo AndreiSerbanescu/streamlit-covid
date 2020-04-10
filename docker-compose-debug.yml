@@ -73,6 +73,7 @@ services:
       - LUNGMASK_CONVERTER_PORT=8000
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
+      - ENVIRONMENT=dockercompose
     ports:
       - "8503:8501"
     command: tail -F anything #streamlit run main.py

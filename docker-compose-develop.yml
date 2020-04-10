@@ -73,6 +73,7 @@ services:
       - LUNGMASK_CONVERTER_PORT=8000
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
+      - ENVIRONMENT=dockercompose
     ports:
       - "8503:8501"
     command: python3 develop.py && tail -F anything
