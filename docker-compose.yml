@@ -10,7 +10,7 @@ services:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONBUFFERED=1
       - ENVIRONMENT=dockercompose
-    command: python3 start.py
+    command: python3 listen.py
     volumes:
       - app-volume:/app/data_share
 
@@ -66,6 +66,7 @@ services:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=dockercompose
+      - PYTHONPATH=/app/
     ports:
       - "8503:8501"
     command: streamlit run main.py

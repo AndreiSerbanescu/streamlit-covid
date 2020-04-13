@@ -11,11 +11,11 @@ services:
       - LUNGMASK_PORT=8000
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONBUFFERED=1
-    command: python3 test.py
+      - PYTHONPATH=/app/
+    command: python3 test/test.py
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./lungmask:/src/
 
 
   ct_muscle_seg:
@@ -26,14 +26,14 @@ services:
     shm_size: '2gb'
     container_name: ct_muscle_seg
     hostname: ct_muscle_seg
-    command: python3 test.py
+    command: python3 test/test.py
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app/
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./CTMuscleSegmentation:/src
 
   ct_visceral_fat:
     build:
@@ -41,14 +41,14 @@ services:
       dockerfile: Dockerfile.testing
     container_name: ct_visceral_fat
     hostname: ct_visceral_fat
-    command: python3 test.py
+    command: python3 test/test.py
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app/
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./CTVisceralFat:/src
 
   lungmask_converter:
     build:
@@ -56,14 +56,14 @@ services:
       dockerfile: Dockerfile.testing
     container_name: lungmask_converter
     hostname: lungmask_converter
-    command: python3 test.py
+    command: python3 test/test.py
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app/
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./lungmask-1:/src
 
   streamlit:
     build:
@@ -83,13 +83,13 @@ services:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=dockercompose
+      - PYTHONPATH=/app/
     ports:
       - "8503:8501"
-    command: python3 test.py
+    command: python3 test/test.py
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./streamlit-container:/src/
 
 
 volumes:

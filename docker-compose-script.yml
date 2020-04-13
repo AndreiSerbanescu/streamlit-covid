@@ -9,7 +9,7 @@ services:
       - LUNGMASK_PORT=8000
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONBUFFERED=1
-    command: python3 start.py
+    command: python3 listen.py
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
@@ -74,6 +74,7 @@ services:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=dockercompose
+      - PYTHONPATH=/app/
     ports:
       - "8503:8501"
     command: python3 develop.py && tail -F anything

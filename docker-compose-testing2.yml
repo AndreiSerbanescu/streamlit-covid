@@ -1,7 +1,9 @@
 version: '3.5'
 services:
   lungmask:
-    build: lungmask
+    build:
+      context: lungmask
+      dockerfile: Dockerfile.testing
     container_name: lungmask_for_streamlit
     hostname: lungmask_for_streamlit
     environment:
@@ -9,7 +11,8 @@ services:
       - LUNGMASK_PORT=8000
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONBUFFERED=1
-    command: python3 start.py
+      - PYTHONPATH=/src/
+    command: tail -F anything
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
@@ -19,47 +22,57 @@ services:
   ct_muscle_seg:
     build:
       context: CTMuscleSegmentation
+      dockerfile: Dockerfile.testing
       shm_size: '2gb'
     shm_size: '2gb'
     container_name: ct_muscle_seg
     hostname: ct_muscle_seg
-    command: python3 listen.py
+    command: tail -F anything
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/src/
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
       - ./CTMuscleSegmentation:/src
 
   ct_visceral_fat:
-    build: CTVisceralFat
+    build:
+      context: CTVisceralFat
+      dockerfile: Dockerfile.testing
     container_name: ct_visceral_fat
     hostname: ct_visceral_fat
-    command: python3 listen.py
+    command: tail -F anything
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/src/
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
       - ./CTVisceralFat:/src
 
   lungmask_converter:
-    build: lungmask-1
+    build:
+      context: lungmask-1
+      dockerfile: Dockerfile.testing
     container_name: lungmask_converter
     hostname: lungmask_converter
-    command: python3 listen.py
+    command: tail -F anything
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/src/
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
       - ./lungmask-1:/src
 
   streamlit:
-    build: streamlit-container
+    build:
+      context: streamlit-container
+      dockerfile: Dockerfile.testing
     container_name: streamlit
     hostname: streamlit
     environment:
@@ -74,9 +87,10 @@ services:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=dockercompose
+      - PYTHONPATH=/src/
     ports:
       - "8503:8501"
-    command: tail -F anything #streamlit run main.py
+    command: tail -F anything
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
