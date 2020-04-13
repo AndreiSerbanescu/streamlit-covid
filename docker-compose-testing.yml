@@ -1,0 +1,97 @@
+version: '3.5'
+services:
+  lungmask:
+    build:
+      context: lungmask
+      dockerfile: Dockerfile.testing
+    container_name: lungmask_for_streamlit
+    hostname: lungmask_for_streamlit
+    environment:
+      - LUNGMASK_HOSTNAME=lungmask_for_streamlit
+      - LUNGMASK_PORT=8000
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONBUFFERED=1
+    command: python3 test.py
+    volumes:
+      - app-volume:/app/data_share
+      - ./source:/app/source
+      - ./lungmask:/src/
+
+
+  ct_muscle_seg:
+    build:
+      context: CTMuscleSegmentation
+      dockerfile: Dockerfile.testing
+      shm_size: '2gb'
+    shm_size: '2gb'
+    container_name: ct_muscle_seg
+    hostname: ct_muscle_seg
+    command: python3 test.py
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - app-volume:/app/data_share
+      - ./source:/app/source
+      - ./CTMuscleSegmentation:/src
+
+  ct_visceral_fat:
+    build:
+      context: CTVisceralFat
+      dockerfile: Dockerfile.testing
+    container_name: ct_visceral_fat
+    hostname: ct_visceral_fat
+    command: python3 test.py
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - app-volume:/app/data_share
+      - ./source:/app/source
+      - ./CTVisceralFat:/src
+
+  lungmask_converter:
+    build:
+      context: lungmask-1
+      dockerfile: Dockerfile.testing
+    container_name: lungmask_converter
+    hostname: lungmask_converter
+    command: python3 test.py
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - app-volume:/app/data_share
+      - ./source:/app/source
+      - ./lungmask-1:/src
+
+  streamlit:
+    build:
+      context: streamlit-container
+      dockerfile: Dockerfile.testing
+    container_name: streamlit
+    hostname: streamlit
+    environment:
+      - LUNGMASK_HOSTNAME=lungmask_for_streamlit
+      - LUNGMASK_PORT=8000
+      - CT_MUSCLE_SEG_HOSTNAME=ct_muscle_seg
+      - CT_MUSCLE_SEG_PORT=8000
+      - CT_FAT_MEASURE_HOSTNAME=ct_visceral_fat
+      - CT_FAT_MEASURE_PORT=8000
+      - LUNGMASK_CONVERTER_HOSTNAME=lungmask_converter
+      - LUNGMASK_CONVERTER_PORT=8000
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
+      - ENVIRONMENT=dockercompose
+    ports:
+      - "8503:8501"
+    command: python3 test.py
+    volumes:
+      - app-volume:/app/data_share
+      - ./source:/app/source
+      - ./streamlit-container:/src/
+
+
+volumes:
+  app-volume:
+
