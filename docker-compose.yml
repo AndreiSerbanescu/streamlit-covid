@@ -73,6 +73,30 @@ services:
     volumes:
       - app-volume:/app/data_share
 
+  covid_detector:
+    build: covid_lesion_detection
+    container_name: covid_detector
+    hostname: covid_detector
+    command: python3 /app/listen.py
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONBUFFERED=1
+      - PYTHONPATH=/app
+    volumes:
+      - app-volume:/app/data_share
+
+  covid_detector_seg:
+    build: covid_lesion_detection_seg
+    container_name: covid_detector_seg
+    hostname: covid_detector_seg
+    command: python3 /app/listen.py
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONBUFFERED=1
+      - PYTHONPATH=/app
+    volumes:
+      - app-volume:/app/data_share
+
 
 volumes:
   app-volume:
