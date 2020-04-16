@@ -15,7 +15,9 @@
 	url = https://github.com/AndreiSerbanescu/CTVisceralFat.git
 [submodule "covid_lesion_detection"]
 	path = covid_lesion_detection
-	url = git@github.com:AndreiSerbanescu/covid_lesion_detection.git
+	url = https://github.com/AndreiSerbanescu/covid_lesion_detection.git
+#	url = git@github.com:AndreiSerbanescu/covid_lesion_detection.git
 [submodule "covid_lesion_detection_seg"]
 	path = covid_lesion_detection_seg
-	url = git@github.com:AndreiSerbanescu/covid_lesion_detection_seg.git
+	url = https://github.com/AndreiSerbanescu/covid_lesion_detection_seg.git
+#url = git@github.com:AndreiSerbanescu/covid_lesion_detection_seg.git
