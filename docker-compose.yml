@@ -63,6 +63,10 @@ services:
       - CT_FAT_MEASURE_PORT=8000
       - LUNGMASK_CONVERTER_HOSTNAME=lungmask_converter
       - LUNGMASK_CONVERTER_PORT=8000
+      - COVID_DETECTOR_HOSTNAME=covid_lesion_detection
+      - COVID_DETECTOR_PORT=8000
+      - COVID_DETECTOR_SEG_HOSTNAME=covid_lesion_detection_seg
+      - COVID_DETECTOR_SEG_PORT=8000
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=dockercompose
