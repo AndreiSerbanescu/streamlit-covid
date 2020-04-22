@@ -9,7 +9,7 @@ services:
       - LUNGMASK_PORT=8000
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONBUFFERED=1
-    command: tail -F anything #python3 start.py
+    command: python3 /src/listen.py
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
@@ -23,7 +23,7 @@ services:
     shm_size: '2gb'
     container_name: ct_muscle_seg
     hostname: ct_muscle_seg
-    command: tail -F anything
+    command: python3 /src/listen.py
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
@@ -36,7 +36,7 @@ services:
     build: CTVisceralFat
     container_name: ct_visceral_fat
     hostname: ct_visceral_fat
-    command: tail -F anything
+    command: python3 /src/listen.py
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
@@ -49,7 +49,7 @@ services:
     build: lungmask-1
     container_name: lungmask_converter
     hostname: lungmask_converter
-    command: tail -F anything
+    command: python3 /src/listen.py
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
@@ -78,10 +78,10 @@ services:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=dockercompose
-      - PYTHONPATH=/app/
+      - PYTHONPATH=/src/
     ports:
       - "8503:8501"
-    command: tail -F anything #streamlit run main.py
+    command: streamlit run /src/main.py
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
@@ -91,11 +91,11 @@ services:
     build: covid_lesion_detection
     container_name: covid_detector
     hostname: covid_detector
-    command: tail -F anything
+    command: python3 /src/listen.py
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONBUFFERED=1
-      - PYTHONPATH=/app
+      - PYTHONPATH=/src
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
@@ -105,11 +105,11 @@ services:
     build: covid_lesion_detection_seg
     container_name: covid_detector_seg
     hostname: covid_detector_seg
-    command: tail -F anything
+    command: python3 /src/listen.py
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONBUFFERED=1
-      - PYTHONPATH=/app
+      - PYTHONPATH=/src
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
