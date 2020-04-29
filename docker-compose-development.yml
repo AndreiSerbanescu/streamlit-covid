@@ -79,6 +79,7 @@ services:
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=dockercompose
       - PYTHONPATH=/src/
+      - DEBUG=1
     ports:
       - "8503:8501"
     command: streamlit run /src/main.py
