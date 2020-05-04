@@ -39,9 +39,10 @@ services:
       - ENVIRONMENT=dockercompose
       - PYTHONPATH=/src/
       - DEBUG=1
-      - TESTING_DIR=/app/source/testing/nifti
+      - NIFTI_TESTING_DIR=/app/source/testing/nifti
+      - DCM_TESTING_DIR=/app/source/testing/dicom
       - TESTING_OUT_DIR=/app/output/
-      - TESTING_INPUT_NAME=image.nii.gz
+      - NIFTI_TESTING_INPUT_NAME=image.nii.gz
     ports:
       - "8503:8501"
     command: python3 /src/testing/test_lungmask.py
