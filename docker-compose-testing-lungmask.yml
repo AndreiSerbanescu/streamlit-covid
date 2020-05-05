@@ -45,7 +45,7 @@ services:
       - NIFTI_TESTING_INPUT_NAME=image.nii.gz
     ports:
       - "8503:8501"
-    command: python3 /src/testing/test_lungmask.py
+    command: tail -F anything #python3 /src/testing/test_lungmask.py
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
