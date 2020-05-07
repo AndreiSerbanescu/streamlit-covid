@@ -13,7 +13,7 @@ services:
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./lungmask:/src/
+      - ./lungmask/files/interface:/src/
 
 
   ct_muscle_seg:
@@ -30,7 +30,7 @@ services:
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./CTMuscleSegmentation:/src
+      - ./CTMuscleSegmentation/files/interface:/src
 
   ct_visceral_fat:
     build: CTVisceralFat
@@ -43,7 +43,7 @@ services:
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./CTVisceralFat:/src
+      - ./CTVisceralFat/files/interface:/src
 
   lungmask_converter:
     build: lungmask-1
@@ -100,7 +100,7 @@ services:
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./covid_lesion_detection:/src/
+      - ./covid_lesion_detection/files/interface:/src/
 
   covid_detector_seg:
     build: covid_lesion_detection_seg
