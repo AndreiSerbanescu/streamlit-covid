@@ -13,7 +13,7 @@ services:
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./lungmask:/src/
+      - ./lungmask/files/interface:/src/
 
 
   ct_muscle_seg:
@@ -30,7 +30,7 @@ services:
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./CTMuscleSegmentation:/src
+      - ./CTMuscleSegmentation/files/interface:/src
 
   ct_visceral_fat:
     build: CTVisceralFat
@@ -43,7 +43,7 @@ services:
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./CTVisceralFat:/src
+      - ./CTVisceralFat/files/interface:/src
 
   lungmask_converter:
     build: lungmask-1
@@ -57,6 +57,35 @@ services:
       - app-volume:/app/data_share
       - ./source:/app/source
       - ./lungmask-1:/src
+
+  covid_detector:
+    build: covid_lesion_detection
+    container_name: covid_detector
+    hostname: covid_detector
+    command: python3 /src/listen.py
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONBUFFERED=1
+      - PYTHONPATH=/src
+    volumes:
+      - app-volume:/app/data_share
+      - ./source:/app/source
+      - ./covid_lesion_detection/files/interface:/src/
+
+  covid_detector_seg:
+    build: covid_lesion_detection_seg
+    container_name: covid_detector_seg
+    hostname: covid_detector_seg
+    command: python3 /src/listen.py
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONBUFFERED=1
+      - PYTHONPATH=/src
+    volumes:
+      - app-volume:/app/data_share
+      - ./source:/app/source
+      - ./covid_lesion_detection_seg/files/interface:/src/
+
 
   streamlit:
     build: streamlit-container
@@ -78,43 +107,18 @@ services:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=dockercompose
-      - PYTHONPATH=/src/
+      - PYTHONPATH=/app/
       - DEBUG=1
+      - FILESERVER_PORT=8505
+      - FILESERVER_BASE_DIR=/app/download
     ports:
       - "8503:8501"
-    command: streamlit run /src/main.py
+      - "8505:8505"
+    command: streamlit run /app/src/main.py
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
-      - ./streamlit-container:/src/
-
-  covid_detector:
-    build: covid_lesion_detection
-    container_name: covid_detector
-    hostname: covid_detector
-    command: python3 /src/listen.py
-    environment:
-      - DATA_SHARE_PATH=/app/data_share
-      - PYTHONBUFFERED=1
-      - PYTHONPATH=/src
-    volumes:
-      - app-volume:/app/data_share
-      - ./source:/app/source
-      - ./covid_lesion_detection:/src/
-
-  covid_detector_seg:
-    build: covid_lesion_detection_seg
-    container_name: covid_detector_seg
-    hostname: covid_detector_seg
-    command: python3 /src/listen.py
-    environment:
-      - DATA_SHARE_PATH=/app/data_share
-      - PYTHONBUFFERED=1
-      - PYTHONPATH=/src
-    volumes:
-      - app-volume:/app/data_share
-      - ./source:/app/source
-      - ./covid_lesion_detection_seg:/src/
+      - ./streamlit-container/files/:/app/src
 
 volumes:
   app-volume:
