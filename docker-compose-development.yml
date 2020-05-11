@@ -109,11 +109,12 @@ services:
       - ENVIRONMENT=dockercompose
       - PYTHONPATH=/app/
       - DEBUG=1
-      - FILESERVER_PORT=8505
+      - FILESERVER_PORT=8504
       - FILESERVER_BASE_DIR=/app/download
+      - FILESERVER_ADDRESS=127.0.0.1
     ports:
       - "8503:8501"
-      - "8505:8505"
+      - "8504:8504"
     command: python3 /app/src/start.py
     volumes:
       - app-volume:/app/data_share
