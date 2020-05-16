@@ -40,6 +40,7 @@ services:
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/src
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
