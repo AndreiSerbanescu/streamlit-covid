@@ -1,0 +1,111 @@
+version: '3.5'
+services:
+  lungmask:
+    build: lungmask
+    container_name: lungmask_for_streamlit
+    hostname: lungmask_for_streamlit
+    environment:
+      - LUNGMASK_HOSTNAME=lungmask_for_streamlit
+      - LUNGMASK_PORT=8000
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONBUFFERED=1
+      - ENVIRONMENT=dockercompose
+    command: python3 listen.py
+    volumes:
+      - app-volume:/app/data_share
+
+  ct_muscle_seg:
+    build:
+      context: CTMuscleSegmentation
+      shm_size: '2gb'
+    shm_size: '2gb'
+    container_name: ct_muscle_seg
+    hostname: ct_muscle_seg
+    command: python3 /app/listen.py
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - app-volume:/app/data_share
+
+  ct_visceral_fat:
+    build: CTVisceralFat
+    container_name: ct_visceral_fat
+    hostname: ct_visceral_fat
+    command: python3 listen.py
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - app-volume:/app/data_share
+
+  lungmask_converter:
+    build: lungmask-1
+    container_name: lungmask_converter
+    hostname: lungmask_converter
+    command: python3 /app/listen.py
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - app-volume:/app/data_share
+
+  streamlit:
+    build: streamlit-container
+    container_name: streamlit
+    hostname: streamlit
+    environment:
+      - LUNGMASK_HOSTNAME=lungmask_for_streamlit
+      - LUNGMASK_PORT=8000
+      - CT_MUSCLE_SEG_HOSTNAME=ct_muscle_seg
+      - CT_MUSCLE_SEG_PORT=8000
+      - CT_FAT_MEASURE_HOSTNAME=ct_visceral_fat
+      - CT_FAT_MEASURE_PORT=8000
+      - LUNGMASK_CONVERTER_HOSTNAME=lungmask_converter
+      - LUNGMASK_CONVERTER_PORT=8000
+      - COVID_DETECTOR_HOSTNAME=covid_detector
+      - COVID_DETECTOR_PORT=8000
+      - COVID_DETECTOR_SEG_HOSTNAME=covid_detector_seg
+      - COVID_DETECTOR_SEG_PORT=8000
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
+      - ENVIRONMENT=dockercompose
+      - PYTHONPATH=/app/src/
+      - FILESERVER_PORT=8504
+      - FILESERVER_BASE_DIR=/app/download
+      - FILESERVER_ADDRESS=146.169.40.107
+    ports:
+      - "8503:8501"
+      - "8504:8504"
+    command: python3 /app/src/start.py
+    volumes:
+      - app-volume:/app/data_share
+
+  covid_detector:
+    build: covid_lesion_detection
+    container_name: covid_detector
+    hostname: covid_detector
+    command: python3 /app/listen.py
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONBUFFERED=1
+      - PYTHONPATH=/app
+    volumes:
+      - app-volume:/app/data_share
+
+  covid_detector_seg:
+    build: covid_lesion_detection_seg
+    container_name: covid_detector_seg
+    hostname: covid_detector_seg
+    command: python3 /app/listen.py
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONBUFFERED=1
+      - PYTHONPATH=/app
+    volumes:
+      - app-volume:/app/data_share
+
+
+volumes:
+  app-volume:
+
