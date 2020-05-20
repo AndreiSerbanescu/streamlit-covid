@@ -74,6 +74,8 @@ services:
       - FILESERVER_PORT=8504
       - FILESERVER_BASE_DIR=/app/download
       - FILESERVER_ADDRESS=146.169.40.107
+      - EMAIL_USERNAME=${EMAIL_USERNAME}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     ports:
       - "8503:8501"
       - "8504:8504"
