@@ -93,6 +93,27 @@ services:
     container_name: streamlit
     hostname: streamlit
     environment:
+      - COMMANDER_AND_STREAMLIT_SHARE_PATH=/app/commander_and_streamlit
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
+      - ENVIRONMENT=dockercompose
+      - PYTHONPATH=/app/src
+      - DEBUG=1
+    ports:
+      - "8503:8501"
+    command: streamlit run /app/src/main.py # python3 /app/src/start.py
+    volumes:
+      - app-volume:/app/data_share
+      - ./source:/app/source
+      - ./streamlit-container/files/:/app/src
+      - commander-and-streamlit:/app/commander_and_streamlit
+
+  commander:
+    build: pipeline_commander
+    container_name: pipeline_commander
+    hostname: pipeline_commander
+    environment:
+      - COMMANDER_AND_STREAMLIT_SHARE_PATH=/app/commander_and_streamlit
       - LUNGMASK_HOSTNAME=lungmask_for_streamlit
       - LUNGMASK_PORT=8000
       - CT_MUSCLE_SEG_HOSTNAME=ct_muscle_seg
@@ -108,7 +129,7 @@ services:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=dockercompose
-      - PYTHONPATH=/app/
+      - PYTHONPATH=/app/src
       - DEBUG=1
       - FILESERVER_PORT=8504
       - FILESERVER_BASE_DIR=/app/download
@@ -116,14 +137,15 @@ services:
       - EMAIL_USERNAME=${EMAIL_USERNAME}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     ports:
-      - "8503:8501"
       - "8504:8504"
-    command: python3 /app/src/start.py
+    command: tail -F anything # python3 /app/src/start.py
     volumes:
       - app-volume:/app/data_share
+      - commander-and-streamlit:/app/commander_and_streamlit
       - ./source:/app/source
-      - ./streamlit-container/files/:/app/src
+      - ./pipeline_commander/files/:/app/src
 
 volumes:
   app-volume:
+  commander-and-streamlit:
 
