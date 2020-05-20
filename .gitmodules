@@ -21,3 +21,6 @@
 	path = covid_lesion_detection_seg
 	url = https://github.com/AndreiSerbanescu/covid_lesion_detection_seg.git
 #url = git@github.com:AndreiSerbanescu/covid_lesion_detection_seg.git
+[submodule "pipeline_commander"]
+	path = pipeline_commander
+	url = https://github.com/AndreiSerbanescu/pipeline_commander.git
