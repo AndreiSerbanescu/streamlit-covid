@@ -99,6 +99,11 @@ services:
       - ENVIRONMENT=dockercompose
       - PYTHONPATH=/app/src
       - DEBUG=1
+      - FILESERVER_PORT=8504
+      - FILESERVER_BASE_DIR=/app/download
+      - FILESERVER_ADDRESS=127.0.0.1
+      - EMAIL_USERNAME=${EMAIL_USERNAME}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     ports:
       - "8503:8501"
     command: streamlit run /app/src/main.py # python3 /app/src/start.py
@@ -107,6 +112,7 @@ services:
       - ./source:/app/source
       - ./streamlit-container/files/:/app/src
       - commander-and-streamlit:/app/commander_and_streamlit
+      - download:/app/download
 
   commander:
     build: pipeline_commander
@@ -144,8 +150,10 @@ services:
       - commander-and-streamlit:/app/commander_and_streamlit
       - ./source:/app/source
       - ./pipeline_commander/files/:/app/src
+      - download:/app/download
 
 volumes:
   app-volume:
   commander-and-streamlit:
+  download:
 
