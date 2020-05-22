@@ -144,7 +144,7 @@ services:
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     ports:
       - "8504:8504"
-    command: tail -F anything # python3 /app/src/start.py
+    command: python3 /app/src/start.py
     volumes:
       - app-volume:/app/data_share
       - commander-and-streamlit:/app/commander_and_streamlit
