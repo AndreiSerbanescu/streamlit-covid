@@ -4,11 +4,12 @@ services:
     build: lungmask
     container_name: lungmask_for_streamlit
     hostname: lungmask_for_streamlit
+    restart: always
     environment:
       - LUNGMASK_HOSTNAME=lungmask_for_streamlit
       - LUNGMASK_PORT=8000
       - DATA_SHARE_PATH=/app/data_share
-      - PYTHONBUFFERED=1
+      - PYTHONUNBUFFERED=1
     command: python3 /src/listen.py
     volumes:
       - app-volume:/app/data_share
@@ -24,6 +25,7 @@ services:
     container_name: ct_muscle_seg
     hostname: ct_muscle_seg
     command: python3 /src/listen.py
+    restart: always
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
@@ -37,6 +39,7 @@ services:
     container_name: ct_visceral_fat
     hostname: ct_visceral_fat
     command: python3 /src/listen.py
+    restart: always
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
@@ -51,6 +54,7 @@ services:
     container_name: lungmask_converter
     hostname: lungmask_converter
     command: python3 /src/listen.py
+    restart: always
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
@@ -64,6 +68,7 @@ services:
     container_name: covid_detector
     hostname: covid_detector
     command: python3 /src/listen.py
+    restart: always
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONBUFFERED=1
@@ -78,6 +83,7 @@ services:
     container_name: covid_detector_seg
     hostname: covid_detector_seg
     command: python3 /src/listen.py
+    restart: always
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONBUFFERED=1
@@ -92,6 +98,7 @@ services:
     build: streamlit-container
     container_name: streamlit
     hostname: streamlit
+    restart: always
     environment:
       - COMMANDER_AND_STREAMLIT_SHARE_PATH=/app/commander_and_streamlit
       - DATA_SHARE_PATH=/app/data_share
@@ -106,7 +113,7 @@ services:
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     ports:
       - "8503:8501"
-    command: streamlit run /app/src/main.py # python3 /app/src/start.py
+    command: streamlit run /app/src/main.py
     volumes:
       - app-volume:/app/data_share
       - ./source:/app/source
@@ -118,6 +125,7 @@ services:
     build: pipeline_commander
     container_name: pipeline_commander
     hostname: pipeline_commander
+    restart: always
     environment:
       - COMMANDER_AND_STREAMLIT_SHARE_PATH=/app/commander_and_streamlit
       - LUNGMASK_HOSTNAME=lungmask_for_streamlit
