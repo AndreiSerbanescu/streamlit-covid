@@ -1,0 +1,7 @@
+tensorflow-addons
+tensorflow-model-optimization
+tensorflow-privacy
+dm-tree
+tensorflow-federated
+opencv-python
+
