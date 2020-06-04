@@ -1,0 +1,15 @@
+version: '3'
+services:
+  lesion_detection_new:
+    build: ./
+    container_name: lesion_detection_new
+    hostname: lesion_detection_new
+    environment:
+      - WORKFLOW_DIR=/app/workflow
+      - BATCH_NAME=batch1
+      - OPERATOR_IN_DIR=input
+      - OPERATOR_OUT_DIR=output
+      - PYTHONBUFFERED=1
+    command: tail -F anything
+    volumes:
+    - ./workflow:/app/workflow
