@@ -3,6 +3,7 @@ from common.utils import *
 from common.exceptions import TaskFailedException
 import glob
 
+
 class FileValidatorNiftiOnly:
 
     def __init__(self, print_statements=False):
@@ -31,7 +32,14 @@ class FileValidatorNiftiOnly:
         return True
 
     def get_fullpath(self, files, element_input_dir):
-        return os.path.join(element_input_dir, files[0])
+
+        inp = ""
+        for file in files:
+            inp = file if "_lung" not in file else inp
+
+
+        return os.path.join(element_input_dir, inp)
+
 
 
 class NiftiAndDicomFileValidator:

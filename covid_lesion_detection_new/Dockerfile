@@ -61,7 +61,6 @@ RUN apt-get install vim -y
 
 
 
-COPY covid /app/covidenv
 COPY files/source/code/ /app/code
 COPY files/source/model /app/model
 
