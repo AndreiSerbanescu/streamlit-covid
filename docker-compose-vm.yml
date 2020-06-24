@@ -4,15 +4,16 @@ services:
     build: lungmask
     container_name: lungmask_for_streamlit
     hostname: lungmask_for_streamlit
+    restart: always
     environment:
       - LUNGMASK_HOSTNAME=lungmask_for_streamlit
       - LUNGMASK_PORT=8000
       - DATA_SHARE_PATH=/app/data_share
-      - PYTHONBUFFERED=1
-      - ENVIRONMENT=dockercompose
-    command: python3 listen.py
+      - PYTHONUNBUFFERED=1
+    command: python3 /app/listen.py
     volumes:
       - app-volume:/app/data_share
+
 
   ct_muscle_seg:
     build:
@@ -22,6 +23,7 @@ services:
     container_name: ct_muscle_seg
     hostname: ct_muscle_seg
     command: python3 /app/listen.py
+    restart: always
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
@@ -32,10 +34,12 @@ services:
     build: CTVisceralFat
     container_name: ct_visceral_fat
     hostname: ct_visceral_fat
-    command: python3 listen.py
+    command: python3 /app/listen.py
+    restart: always
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
+      - PYTHONPATH=/app
     volumes:
       - app-volume:/app/data_share
 
@@ -44,17 +48,71 @@ services:
     container_name: lungmask_converter
     hostname: lungmask_converter
     command: python3 /app/listen.py
+    restart: always
     environment:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
     volumes:
       - app-volume:/app/data_share
 
+  covid_detector:
+    build: covid_lesion_detection
+    container_name: covid_detector
+    hostname: covid_detector
+    command: python3 /app/listen.py
+    restart: always
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONBUFFERED=1
+      - PYTHONPATH=/app
+    volumes:
+      - app-volume:/app/data_share
+
+  covid_detector_seg:
+    build: covid_lesion_detection_seg
+    container_name: covid_detector_seg
+    hostname: covid_detector_seg
+    command: python3 /app/listen.py
+    restart: always
+    environment:
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONBUFFERED=1
+      - PYTHONPATH=/app
+    volumes:
+      - app-volume:/app/data_share
+
+
   streamlit:
     build: streamlit-container
     container_name: streamlit
     hostname: streamlit
+    restart: always
     environment:
+      - COMMANDER_AND_STREAMLIT_SHARE_PATH=/app/commander_and_streamlit
+      - DATA_SHARE_PATH=/app/data_share
+      - PYTHONUNBUFFERED=1
+      - ENVIRONMENT=dockercompose
+      - PYTHONPATH=/app/src
+      - EMAIL_USERNAME=${EMAIL_USERNAME}
+      - EMAIL_PASSWORD=${EMAIL_PASSWORD}
+      - FILESERVER_PORT=8504
+      - FILESERVER_BASE_DIR=/app/download
+      - FILESERVER_ADDRESS=${ACCESSIBLE_IP_ADDRESS}
+    ports:
+      - "80:8501"
+    command: streamlit run /app/src/main.py
+    volumes:
+      - app-volume:/app/data_share
+      - commander-and-streamlit:/app/commander_and_streamlit
+      - download:/app/download
+
+  commander:
+    build: pipeline_commander
+    container_name: pipeline_commander
+    hostname: pipeline_commander
+    restart: always
+    environment:
+      - COMMANDER_AND_STREAMLIT_SHARE_PATH=/app/commander_and_streamlit
       - LUNGMASK_HOSTNAME=lungmask_for_streamlit
       - LUNGMASK_PORT=8000
       - CT_MUSCLE_SEG_HOSTNAME=ct_muscle_seg
@@ -70,44 +128,23 @@ services:
       - DATA_SHARE_PATH=/app/data_share
       - PYTHONUNBUFFERED=1
       - ENVIRONMENT=dockercompose
-      - PYTHONPATH=/app/src/
+      - PYTHONPATH=/app/src
+      - DEBUG=1
       - FILESERVER_PORT=8504
       - FILESERVER_BASE_DIR=/app/download
-      - FILESERVER_ADDRESS=146.169.40.107
+      - FILESERVER_ADDRESS=${ACCESSIBLE_IP_ADDRESS}
       - EMAIL_USERNAME=${EMAIL_USERNAME}
       - EMAIL_PASSWORD=${EMAIL_PASSWORD}
     ports:
-      - "8503:8501"
       - "8504:8504"
     command: python3 /app/src/start.py
     volumes:
       - app-volume:/app/data_share
-
-  covid_detector:
-    build: covid_lesion_detection
-    container_name: covid_detector
-    hostname: covid_detector
-    command: python3 /app/listen.py
-    environment:
-      - DATA_SHARE_PATH=/app/data_share
-      - PYTHONBUFFERED=1
-      - PYTHONPATH=/app
-    volumes:
-      - app-volume:/app/data_share
-
-  covid_detector_seg:
-    build: covid_lesion_detection_seg
-    container_name: covid_detector_seg
-    hostname: covid_detector_seg
-    command: python3 /app/listen.py
-    environment:
-      - DATA_SHARE_PATH=/app/data_share
-      - PYTHONBUFFERED=1
-      - PYTHONPATH=/app
-    volumes:
-      - app-volume:/app/data_share
-
+      - commander-and-streamlit:/app/commander_and_streamlit
+      - download:/app/download
 
 volumes:
   app-volume:
+  commander-and-streamlit:
+  download:
 
